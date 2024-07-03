@@ -1,0 +1,12 @@
+#!/bin/bash
+
+tmpfile=$(mktemp)
+
+cat - | awk '{print NR, $0}' > $tmpfile
+
+src=$(cat << EOF
+plot for [i=3:*] "$tmpfile" using 1:i:xtic(2) title columnheader(i) with linespoints
+EOF
+)
+
+gnuplot --persist -e "$src"
